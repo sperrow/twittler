@@ -7,30 +7,69 @@
   </head>
   <body>
     <h1>Twittler</h1>
+    <h3>Home Timeline</h3>
     <div class="timeline"></div>
     <div class="btn">
-      <button id="refresh">Refresh</button>
+      <button id="refresh">New Tweets</button>
     </div>
     <script>
 
       $(document).ready(function(){
         var $timeline = $('.timeline');
-        $timeline.html('');
+        var timelineName = 'home';
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
+        var displayTweet = function(tweet) {
           var $tweet = $('<div class="tweet"></div>');
-          var username = '<a href="#">@' + tweet.user + '</a>';
+          var username = '<a class="username" data-name="' + tweet.user + '">@' + tweet.user + '</a>';
           $tweet.append(username);
           var message = '<span class="message">: ' + tweet.message + '</span>';
           $tweet.append(message);
           var timestamp = '<span class="timestamp"> ' + tweet.created_at + '</span>';
           $tweet.append(timestamp);
-          //$tweet.html($username + ': ' + tweet.message);
-          $tweet.appendTo($timeline);
-          index -= 1;
-        }
+          $tweet.appendTo($('.timeline'));
+        };
+
+        var populateTimeline = function() {
+          $timeline.html('');
+          var stream;
+          if(timelineName === 'home') {
+            stream = streams.home;
+          } else {
+            stream = streams.users[timelineName];
+          }
+          var index = stream.length - 1;
+          while(index >= 0) {
+            var tweet = stream[index];
+            displayTweet(tweet);
+            index -= 1;
+          }
+        };
+
+        populateTimeline();
+
+        $(".timeline").on("click", ".tweet", function() {
+          timelineName = $(this).find("a").data("name");
+          $("h3").text('@' + timelineName);
+          populateTimeline();
+          $("#refresh").text('Home');
+        });
+
+        $("#refresh").on("click", function() {
+          // check which timeline is active
+          if(timelineName !== 'home') {
+            timelineName = 'home';
+            $("h3").text('Home Timeline');
+            populateTimeline();
+            $("#refresh").text('New Tweets');
+          } else {
+            var index = streams.home.length - 1;
+            for(var i = 1; i < 6; i++) {
+              generateRandomTweet();
+              var tweet = streams.home[index + i];
+              displayTweet(tweet);
+            }
+          }
+        });
 
       });
 
