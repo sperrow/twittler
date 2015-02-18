@@ -1,0 +1,33 @@
+h1 {
+  margin-left: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.timeline {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.tweet {
+  border: 1px solid gray;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.tweet:nth-child(even) {
+  background-color: #EEE;
+}
+
+.timestamp {
+  font-size: small;
+  color: #888;
+}
+
+.btn {
+  margin: 10px;
+}

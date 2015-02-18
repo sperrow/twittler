@@ -1,22 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
   </head>
   <body>
+    <h1>Twittler</h1>
+    <div class="timeline"></div>
+    <div class="btn">
+      <button id="refresh">Refresh</button>
+    </div>
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        var $timeline = $('.timeline');
+        $timeline.html('');
 
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          var $tweet = $('<div class="tweet"></div>');
+          var username = '<a href="#">@' + tweet.user + '</a>';
+          $tweet.append(username);
+          var message = '<span class="message">: ' + tweet.message + '</span>';
+          $tweet.append(message);
+          var timestamp = '<span class="timestamp"> ' + tweet.created_at + '</span>';
+          $tweet.append(timestamp);
+          //$tweet.html($username + ': ' + tweet.message);
+          $tweet.appendTo($timeline);
           index -= 1;
         }
 
